@@ -1,3 +1,5 @@
+import asyncio
+
 from aiogram import Dispatcher, Bot
 from aiogram.dispatcher.fsm.context import FSMContext
 from aiogram.dispatcher.fsm.state import StatesGroup, State
@@ -138,6 +140,9 @@ async def get_accept_product_article(call: CallbackQuery, state: FSMContext):
                 f'\nпозиция на странице - <b>{info["position on the page"]}</b>',
                 parse_mode='HTML'
             )
+        await asyncio.sleep(5)
+        await call.message.answer('Чтобы посмотреть код на GitHub, воспользуйтесь меню, либо нажмите на '
+                                  '/GitHub')
     else:
         await call.message.edit_text(
             text=f'🔎 Повторно введите артикул товара на wildberries, который будем искать.'
@@ -146,6 +151,20 @@ async def get_accept_product_article(call: CallbackQuery, state: FSMContext):
             reply_markup=None,
             parse_mode='HTML'
         )
+
+
+async def cancel(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer(f'Состояния сброшены, если хотите начать сначала нажмите /start')
+
+
+async def send_github_link(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer(
+        'Состояния сброшены, чтобы начать пользоваться ботом нажмите на /start'
+        '\n\n<a href="https://github.com/TonyCotony/Wildberries_article_parser">А вот ссылка репо на GitHub</a></b>',
+        parse_mode='HTML'
+    )
 
 
 def handlers_for_search(dp: Dispatcher) -> None:
@@ -157,3 +176,5 @@ def handlers_for_search(dp: Dispatcher) -> None:
     dp.callback_query.register(get_accept_product_group, state=ArticleSearch.await_product_group)
     dp.message.register(get_product_article, state=ArticleSearch.await_product_article),
     dp.callback_query.register(get_accept_product_article, state=ArticleSearch.await_product_article)
+    dp.message.register(cancel, commands=['cancel'])
+    dp.message.register(send_github_link, commands=['GitHub'])

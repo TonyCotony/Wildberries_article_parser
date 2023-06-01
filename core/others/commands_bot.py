@@ -6,12 +6,16 @@ async def set_commands(bot: Bot):
     """Изменяет команды для бота в специальном меню слева"""
     command = [
         BotCommand(
-            command='start',
+            command='Start',
             description='Начните работу со мной'
         ),
         BotCommand(
-            command='cancel',
+            command='Cancel',
             description='Если что-то пошло не так'
+        ),
+        BotCommand(
+            command='GitHub',
+            description='Ссылка на код бота на Git'
         )
     ]
 

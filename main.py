@@ -18,11 +18,6 @@ async def start_bot(bot: Bot):
     await bot.send_message(settings.user.admin_id, text='Bot started')
 
 
-async def stop_bot(bot: Bot):
-    """при выключении отправляет сообщение овнеру"""
-    await bot.send_message(settings.user.admin_id, text='Bot turned off')
-
-
 async def start():
     """Функция старта бота с регистрацией хендлеров и других частей, потом явно будут мидлвари"""
     logging.basicConfig(
